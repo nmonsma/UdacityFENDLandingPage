@@ -46,33 +46,33 @@ function elementIsNearTop(element) {
 
 // build the nav
 
-for (const section of sectionsArray) {
-    const id = section.id;
-    const name = section.getElementsByTagName('h2')[0].innerText;
+function buildMenu () {
+    for (const section of sectionsArray) {
+        const id = section.id;
+        const name = section.getElementsByTagName('h2')[0].innerText;
 
-    const navbarElement = document.createElement('li');
-    navbarElement.innerHTML = `<a href="#${id}">${name}</a>`;
-    document.getElementById('navbar__list').appendChild(navbarElement);
+        const navbarElement = document.createElement('li');
+        navbarElement.innerHTML = `<a href="#${id}" id="${id}-nav">${name}</a>`;
+        document.getElementById('navbar__list').appendChild(navbarElement);
+    }
 }
 
+// Add class "active-section" to the first section that begins below the top of the screen.
+// TODO: Fix this so that the breakpoint is different. In this format, if the visible section is longer than the viewport, the next section will be active as soon as the header scrolls offscreen.
+// TODO: Mark the section-nav with the class "active-section" so that the menu is the thing that changes.
 
-// Add class 'active' to section when near top of viewport
-
-
-// TODO: Change this function so that "active-section" is a class added to exactly ONE element. 
-// The EventListener function will have to include two for-loops: one to loop through and find the element that is most "near the top"--the one with the smallest nonzero y.
-// the secton loop will then have to apply the... Wait, since the elements will be in ascending-y order, the loop just needs to look for the first non-zero y, and then remove "active" from all the others.
-window.addEventListener('scroll', function () {
+function findActive () {
+    let activeIsFound = false;
     for (section of sectionsArray) {
-        if elementIsNearTop(section) {
+        if (section.getBoundingClientRect()['y'] > 0 && activeIsFound == false) {
             section.classList.add('active-section');
+            activeIsFound = true;            
         } else {
             section.classList.remove('active-section');        
         }
     }
+   
 }
-
-
 
 
 // Scroll to anchor ID using scrollTO event
@@ -84,10 +84,16 @@ window.addEventListener('scroll', function () {
  * 
 */
 
+
 // Build menu 
+
+buildMenu;
 
 // Scroll to section on link click
 
+
+
 // Set sections as active
 
+window.addEventListener('scroll', findActive);
 
