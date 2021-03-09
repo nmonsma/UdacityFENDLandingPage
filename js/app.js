@@ -36,6 +36,11 @@ function elementIsNearTop(element) {
 }
 
 
+//TODO: Build this function to find the a links that link to id targets...?
+function findIdLinks () {
+    const links = document.querySelector()
+
+}
 
 
 /**
@@ -44,7 +49,7 @@ function elementIsNearTop(element) {
  * 
 */
 
-// build the nav
+// Build the nav by cycling through the sections and creating links in the nav for each section based on the content of its h2 tag.
 
 function buildMenu () {
     for (const section of sectionsArray) {
@@ -57,26 +62,34 @@ function buildMenu () {
     }
 }
 
-// Add class "active-section" to the first section that begins below the top of the screen.
-// TODO: Fix this so that the breakpoint is different. In this format, if the visible section is longer than the viewport, the next section will be active as soon as the header scrolls offscreen.
-// TODO: Mark the section-nav with the class "active-section" so that the menu is the thing that changes.
+// When the browser scrolls, check to see if any of the sections start within 100px of the top of the viewport.
+// If one does, then cycle through all the sections, removing the "active" classes from the sections and nav links.
+// Add the "active" classes to the near-the-top section and its nav link.
 
 function findActive () {
-    let activeIsFound = false;
     for (section of sectionsArray) {
-        if (section.getBoundingClientRect()['y'] > 0 && activeIsFound == false) {
+        if (section.getBoundingClientRect()['y'] > -100 && section.getBoundingClientRect()['y'] < 100) {
+            for (sectionForRemoval of sectionsArray) {
+                const headerId = `${sectionForRemoval.id}-nav`;
+                sectionForRemoval.classList.remove('active-section');
+                document.getElementById(headerId).classList.remove('active-nav');
+            }
+            const headerId = `${section.id}-nav`;
             section.classList.add('active-section');
-            activeIsFound = true;            
-        } else {
-            section.classList.remove('active-section');        
+            document.getElementById(headerId).classList.add('active-nav');
+            break;
         }
-    }
-   
+    }   
 }
 
 
 // Scroll to anchor ID using scrollTO event
+//TODO: the offsetTop seems to be the top y of the element. Check this in the console.
 
+function smoothScroll (target) {
+    const location = target.offsetTop;
+    window.scrollTo(0, location);
+}
 
 /**
  * End Main Functions
@@ -87,7 +100,7 @@ function findActive () {
 
 // Build menu 
 
-buildMenu;
+buildMenu ();
 
 // Scroll to section on link click
 
