@@ -35,14 +35,6 @@ function elementIsNearTop(element) {
     }
 }
 
-
-//TODO: Build this function to find the a links that link to id targets...?
-function findIdLinks () {
-    const links = document.querySelector()
-
-}
-
-
 /**
  * End Helper Functions
  * Begin Main Functions
@@ -50,14 +42,19 @@ function findIdLinks () {
 */
 
 // Build the nav by cycling through the sections and creating links in the nav for each section based on the content of its h2 tag.
+// Set the onclick event attribute of each link to use the smoothScroll function.
 
 function buildMenu () {
     for (const section of sectionsArray) {
         const id = section.id;
         const name = section.getElementsByTagName('h2')[0].innerText;
-
+        const targetLocation = section.offsetTop;
         const navbarElement = document.createElement('li');
-        navbarElement.innerHTML = `<a href="#${id}" id="${id}-nav">${name}</a>`;
+        const navbarLink = document.createElement('a');
+        navbarLink.setAttribute('id', `${id}-nav`);
+        navbarLink.setAttribute('onclick', `window.scrollTo({top: ${targetLocation}, behavior: 'smooth'})`);
+        navbarLink.innerText = name;
+        navbarElement.appendChild(navbarLink);
         document.getElementById('navbar__list').appendChild(navbarElement);
     }
 }
@@ -83,28 +80,15 @@ function findActive () {
 }
 
 
-// Scroll to anchor ID using scrollTO event
-//TODO: the offsetTop seems to be the top y of the element. Check this in the console.
-
-function smoothScroll (target) {
-    const location = target.offsetTop;
-    window.scrollTo(0, location);
-}
-
 /**
  * End Main Functions
  * Begin Events
  * 
 */
 
-
-// Build menu 
+// Build the menu with the smooth scrolling action
 
 buildMenu ();
-
-// Scroll to section on link click
-
-
 
 // Set sections as active
 
