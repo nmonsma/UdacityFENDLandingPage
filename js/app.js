@@ -45,6 +45,8 @@ function elementIsNearTop(element) {
 // Set the onclick event attribute of each link to use the smoothScroll function.
 
 function buildMenu () {
+    const navbarList = document.getElementById('navbar__list');
+    navbarList.innerHTML = '';
     for (const section of sectionsArray) {
         const id = section.id;
         const name = section.getElementsByTagName('h2')[0].innerText;
@@ -52,10 +54,11 @@ function buildMenu () {
         const navbarElement = document.createElement('li');
         const navbarLink = document.createElement('a');
         navbarLink.setAttribute('id', `${id}-nav`);
+        navbarLink.setAttribute('class', 'menu__link');
         navbarLink.setAttribute('onclick', `window.scrollTo({top: ${targetLocation}, behavior: 'smooth'})`);
         navbarLink.innerText = name;
         navbarElement.appendChild(navbarLink);
-        document.getElementById('navbar__list').appendChild(navbarElement);
+        navbarList.appendChild(navbarElement);
     }
 }
 
@@ -86,9 +89,13 @@ function findActive () {
  * 
 */
 
-// Build the menu with the smooth scrolling action
+// Build the menu with the smooth scrolling action. Wait half a second so that the calculation of the scroll targets is not premature.
 
-buildMenu ();
+window.setTimeout(buildMenu, 500);
+
+// Rebuilds the menu on resize so that the targets are recalculated.
+
+window.addEventListener('resize', buildMenu);
 
 // Set sections as active
 
